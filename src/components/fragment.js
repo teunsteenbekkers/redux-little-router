@@ -47,7 +47,9 @@ const relativePaths = (ComposedComponent: ReactClass<*>) => {
       const { router, parentRoute, parentId } = this.context;
       const { store } = router;
 
-      const location = store.getState().router;
+      const isImmutable = store.getState().get !== undefined && typeof store.getState().get === 'function';
+
+      const location = isImmutable ? store.getState().get('router') : store.getState().router;
 
       const routePrefix = parentRoute && parentRoute !== '/' ? parentRoute : '';
 

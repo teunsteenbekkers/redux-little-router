@@ -73,7 +73,10 @@ const Link = (
   } = props;
 
   const { store } = context.router;
-  const { router: { basename } } = store.getState();
+
+  const isImmutable = store.getState().get !== undefined && typeof store.getState().get === 'function';
+
+  const { router: { basename } } = isImmutable ? store.getState().toJS() : store.getState();
 
   // Ensure the href has both a search and a query when needed
   const href = normalizeHref(rawHref);
