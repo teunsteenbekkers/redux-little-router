@@ -47,6 +47,7 @@
     "history": "^4.6.1",
     "lodash.assign": "^4.2.0",
     "query-string": "^4.3.2",
+    "redux-little-router": "https://github.com/teunsteenbekkers/redux-little-router",
     "url-pattern": "^1.0.3"
   },
   "devDependencies": {

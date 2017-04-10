@@ -38,7 +38,10 @@ class RouterProviderImpl extends Component {
 
   render() {
     const { store } = this.router;
-    const routerState = store.getState().router;
+
+    const isImmutable = store.getState().get !== undefined && typeof store.getState().get === 'function';
+
+    const routerState = isImmutable ? store.getState().get('router') : store.getState().router;
 
     // Ensure that the router props from connect()
     // actually get to the child component(s)
@@ -62,9 +65,13 @@ type ProvideRouterArgs = {
   store: StoreWithRouter<*, *>
 };
 
-export const RouterProvider = connect(state => ({
-  router: state.router
-}))(RouterProviderImpl);
+export const RouterProvider = connect(state => {
+  const isImmutable = state.get !== undefined && typeof state.get === 'function';
+
+  return {
+    router: isImmutable ? state.get('router') : state.router
+  }
+})(RouterProviderImpl);
 
 export default ({ store }: ProvideRouterArgs) =>
   (ComposedComponent: ReactClass<*>) => (props: Object) =>
